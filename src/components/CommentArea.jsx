@@ -8,6 +8,7 @@ function CommentArea({ asin }) {
   const [isLoading, setIsLoading] = useState(false);
 
   const getComments = async () => {
+    if (!asin) return;
     setIsLoading(true);
     try {
       const response = await fetch(`https://striveschool-api.herokuapp.com/api/books/${asin}/comments/`, {
@@ -17,24 +18,37 @@ function CommentArea({ asin }) {
         },
       });
 
-      const data = await response.json();
-      setComments(data);
+      if (response.ok) {
+        const data = await response.json();
+        setComments(data);
+      }
     } catch (error) {
-      console.error(error);
+      console.error("Errore fetch:", error);
     } finally {
       setIsLoading(false);
     }
   };
 
+  // 2. Lo useEffect si occupa solo di far partire la fetch quando l'asin cambia
   useEffect(() => {
     getComments();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [asin]);
 
+  if (!asin) {
+    return (
+      <div className="mt-3 p-3 bg-light rounded text-center">
+        <p className="mb-0 text-muted">Seleziona un libro per vedere i commenti.</p>
+      </div>
+    );
+  }
+
   return (
-    <div className="mt-3 p-2 bg-light rounded" style={{ maxHeight: "300px", overflowY: "auto" }}>
+    <div className="mt-3 p-2 bg-light rounded" style={{ maxHeight: "500px", overflow: "auto" }}>
       <h6 className="small fw-bold">Recensioni:</h6>
       {isLoading && <Spinner animation="border" variant="primary" size="sm" />}
       <CommentList comments={comments} getComments={getComments} />
+      <hr />
       <AddComment asin={asin} getComments={getComments} />
     </div>
   );

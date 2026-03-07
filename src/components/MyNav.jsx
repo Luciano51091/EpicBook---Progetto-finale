@@ -6,8 +6,7 @@ function MyNav({ searchQuery, setSearchQuery }) {
   const { theme, setTheme } = useContext(ThemeContext);
 
   return (
-    <Navbar bg={theme} variant={theme} expand="lg" className="shadow-sm sticky-top">
-      <Container>
+    <Navbar bg={theme} variant={theme} expand="lg" className="shadow-sm sticky-top" >
         <Navbar.Brand href="#">Epibooks</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
 

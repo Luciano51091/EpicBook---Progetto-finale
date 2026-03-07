@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Form } from "react-bootstrap";
 
 function AddComment({ asin, getComments }) {
@@ -14,7 +14,11 @@ function AddComment({ asin, getComments }) {
     try {
       const response = await fetch(`https://striveschool-api.herokuapp.com/api/books/${asin}/comments/`, {
         method: "POST",
-        body: JSON.stringify(newComment),
+        body: JSON.stringify({
+          comment: text,
+          rate: rating,
+          elementId: asin,
+        }),
         headers: {
           "Content-Type": "application/json",
           Authorization:
@@ -37,6 +41,10 @@ function AddComment({ asin, getComments }) {
       alert(error.message);
     }
   };
+
+  useEffect(() => {
+    setNewComment((prev) => ({ ...prev, elementId: asin }));
+  }, [asin]);
 
   return (
     <Form className="mt-3" onSubmit={sendComment}>
