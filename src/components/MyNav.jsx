@@ -1,13 +1,17 @@
 import { Navbar, Nav, Container, Form, Button } from "react-bootstrap";
 import { useContext } from "react";
 import { ThemeContext } from "../context/ThemeContext";
+import { Link } from "react-router";
 
 function MyNav({ searchQuery, setSearchQuery }) {
   const { theme, setTheme } = useContext(ThemeContext);
 
   return (
-    <Navbar bg={theme} variant={theme} expand="lg" className="shadow-sm sticky-top" >
-        <Navbar.Brand href="#">Epibooks</Navbar.Brand>
+    <Navbar bg={theme} variant={theme} expand="lg" className="shadow-sm sticky-top">
+      <Container>
+        <Navbar.Brand as={Link} to="/">
+          Epibooks
+        </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
 
         <Navbar.Collapse id="basic-navbar-nav">

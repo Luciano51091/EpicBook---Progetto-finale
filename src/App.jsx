@@ -5,20 +5,28 @@ import AllTheBooks from "./components/AllTheBooks";
 import MyFooter from "./components/MyFooter";
 import MyNav from "./components/MyNav";
 import Welcome from "./components/Welcome";
+import { BrowserRouter, Route, Routes } from "react-router";
+import BookDetails from "./components/BookDetails";
+import NotFound from "./components/NotFound";
 
 function App() {
   const [searchQuery, setSearchQuery] = useState("");
   const [theme, setTheme] = useState("light");
 
   return (
-    <ThemeContext.Provider value={{ theme, setTheme }}>
-      <div className={theme === "light" ? "bg-white text-dark" : "bg-dark text-white"}>
-        <MyNav searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
-        <Welcome />
-        <AllTheBooks searchQuery={searchQuery} />
-        <MyFooter />
-      </div>
-    </ThemeContext.Provider>
+    <BrowserRouter>
+      <ThemeContext.Provider value={{ theme, setTheme }}>
+        <div className={theme === "light" ? "bg-white text-dark" : "bg-dark text-white"}>
+          <MyNav searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+          <Routes>
+            <Route path="/" element={<AllTheBooks searchQuery={searchQuery} />} />
+            <Route path="/details/:asin" element={<BookDetails />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+          <MyFooter />
+        </div>
+      </ThemeContext.Provider>
+    </BrowserRouter>
   );
 }
 
